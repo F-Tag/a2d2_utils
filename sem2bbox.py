@@ -6,6 +6,8 @@ os.environ["OPENBLAS_NUM_THREADS"] = "1"
 os.environ["MKL_NUM_THREADS"] = "1"
 os.environ["VECLIB_MAXIMUM_THREADS"] = "1"
 os.environ["NUMEXPR_NUM_THREADS"] = "1"
+os.environ["OPENCV_FOR_THREADS_NUM"] = "1"
+os.environ["OPENCV_FFMPEG_THREADS"] = "1"
 
 # import packages
 import json
@@ -44,7 +46,7 @@ USE_CLASS = [
     "Traffic guide obj.",
 ]
 
-output_dir = "E:/datasets/A2D2/2d_bbox"
+output_dir = "E:/datasets/A2D2/2d_bbox_from_map"
 output_dir = Path(output_dir)
 
 
@@ -68,7 +70,10 @@ def process(image_file, classes, camera_params):
     else:
         camera_name = image_file.parent.name
 
-    camera_param = camera_params[camera_name]
+    try:
+        camera_param = camera_params[camera_name]
+    except KeyError:
+        camera_param = camera_params[camera_name.replace("cam_", "")]
     camera_matrix = np.array(camera_param["CamMatrix"])
     dist_coeffs = np.array(camera_param["Distortion"])
     lens_type = camera_param["Lens"]
@@ -150,10 +155,10 @@ def main():
     with open(classes, "r") as f:
         classes = json.load(f)
 
-    image_files = A2D2_ROOT.glob("**/camera/**/*.png")
+    image_files = sorted(A2D2_ROOT.glob("**/camera/**/*.png"))
 
     # joblib parralel
-    Parallel(n_jobs=-2, verbose=0)(
+    Parallel(n_jobs=-4, verbose=0)(
         delayed(process)(image_file, classes, camera_params)
         for image_file in tqdm(image_files)
     )

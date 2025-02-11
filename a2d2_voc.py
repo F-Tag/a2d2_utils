@@ -23,7 +23,7 @@ assert A2D2_ROOT.exists()
 
 UNDISTORT = False
 
-output_dir = "E:/datasets/A2D2/2d_bbox_from_3d" 
+output_dir = "E:/datasets/A2D2/2d_bbox_from_3d"
 if UNDISTORT:
     output_dir += "_undistorted"
 output_dir = Path(output_dir)
@@ -74,13 +74,21 @@ def process(image_file, classes, camera_params):
     if UNDISTORT:
         bboxes = bboxes.reshape(1, -1, 2)
         if lens_type == "Telecam":
-            image = cv2.undistort(image, camera_matrix, dist_coeffs, None, camera_matrix)
-            bboxes = cv2.undistortPoints(bboxes, camera_matrix, dist_coeffs, None, camera_matrix)
+            image = cv2.undistort(
+                image, camera_matrix, dist_coeffs, None, camera_matrix
+            )
+            bboxes = cv2.undistortPoints(
+                bboxes, camera_matrix, dist_coeffs, None, camera_matrix
+            )
         else:
-            image = cv2.fisheye.undistortImage(image, camera_matrix, dist_coeffs, None, camera_matrix)
-            bboxes = cv2.fisheye.undistortPoints(bboxes, camera_matrix, dist_coeffs, None, camera_matrix)
+            image = cv2.fisheye.undistortImage(
+                image, camera_matrix, dist_coeffs, None, camera_matrix
+            )
+            bboxes = cv2.fisheye.undistortPoints(
+                bboxes, camera_matrix, dist_coeffs, None, camera_matrix
+            )
         bboxes = bboxes.squeeze(1).reshape(-1, 4)
-    
+
     cv2.imwrite(out_image_path, image)
 
     relative_path = str(out_image_path.relative_to(output_dir))

@@ -1,7 +1,7 @@
 # import packages
 import json
-from pathlib import Path
 from collections import Counter
+from pathlib import Path
 
 from joblib import Parallel, delayed
 from tqdm import tqdm
@@ -9,6 +9,7 @@ from tqdm import tqdm
 A2D2_ROOT = "E:/datasets/A2D2/camera_lidar_semantic_bboxes/camera_lidar_semantic_bboxes"
 A2D2_ROOT = Path(A2D2_ROOT)
 assert A2D2_ROOT.exists()
+
 
 def process(image_file, classes, camera_params):
     camera_path = image_file.parent.name
@@ -48,7 +49,7 @@ def main():
         delayed(process)(image_file, classes, camera_params)
         for image_file in tqdm(image_files)
     )
-    
+
     # flatten list in list
     classes = [item for sublist in classes for item in sublist]
     classes = Counter(classes)
@@ -57,7 +58,6 @@ def main():
     classes = sorted(classes.items(), key=lambda x: x[1], reverse=True)
     print(json.dumps([class_name for class_name, _ in classes]))
     print(len(classes))
-
 
 
 if __name__ == "__main__":

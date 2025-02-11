@@ -1,7 +1,8 @@
 from collections import Counter
 from pathlib import Path
 
-ROOT = "E:/datasets/A2D2/2d_bbox_from_3d/VOC2007"
+# ROOT = "E:/datasets/A2D2/2d_bbox_from_3d/VOC2007"
+ROOT = r"E:\datasets\A2D2\2d_bbox_from_map"
 ROOT = Path(ROOT)
 
 if __name__ == "__main__":
