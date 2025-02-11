@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "a2s2-preproc"
+version = "0.1.0"
+description = ""
+authors = ["Fumiaki Taguchi <25476669+F-Tag@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+tqdm = "^4.67.1"
+opencv-python = "^4.11.0.86"
+pascal-voc-writer = "^0.1.4"
+joblib = "^1.4.2"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.9.4"
+isort = "^6.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
